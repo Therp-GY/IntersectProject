@@ -2,6 +2,34 @@
 #define MATH_H
 #include <ostream>
 #include <iostream>
+#include <functional>	
+
+template<typename T>
+inline void hash_combine(std::size_t& seed, const T& val)
+{
+	seed ^= std::hash<T>()(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
+template<typename T>
+inline void hash_val(std::size_t& seed, const T& val)
+{
+	hash_combine(seed, val);
+}
+
+template<typename T, typename... Types>
+inline void hash_val(std::size_t& seed, const T& val, const Types& ... args)
+{
+	hash_combine(seed, val);
+	hash_val(seed, args...);
+}
+
+template<typename... Types>
+inline std::size_t hash_val(const Types& ...args)
+{
+	std::size_t seed = 0;
+	hash_val(seed, args...);
+	return seed;
+}
 
 class Point {
 	double x_;
@@ -20,6 +48,18 @@ public:
 	Point operator/(const double& d) const;
 	friend void operator<<(std::ostream &os,  Point &point);
 };
+
+namespace std
+{
+	template<>
+	struct hash<Point>
+	{
+		size_t operator() (const Point& s) const noexcept
+		{
+			return hash_val(s.get_x(), s.get_y());
+		}
+	}; // 间接调用原生Hash.
+}
 
 typedef Point Vector;
 
@@ -55,4 +95,7 @@ public:
 };
 
 bool equal(const double& a, const double& b);
+
+
+
 #endif
