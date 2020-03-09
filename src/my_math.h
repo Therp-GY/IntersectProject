@@ -4,27 +4,27 @@
 #include <iostream>
 #include <functional>	
 
-template<typename T>
-inline void hash_combine(std::size_t& seed, const T& val)
+template<typename t>
+inline void hash_combine(std::size_t& seed, const t& val)
 {
-	seed ^= std::hash<T>()(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+	seed ^= std::hash<t>()(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }
 
-template<typename T>
-inline void hash_val(std::size_t& seed, const T& val)
+template<typename t>
+inline void hash_val(std::size_t& seed, const t& val)
 {
 	hash_combine(seed, val);
 }
 
-template<typename T, typename... Types>
-inline void hash_val(std::size_t& seed, const T& val, const Types& ... args)
+template<typename t, typename... types>
+inline void hash_val(std::size_t& seed, const t& val, const types& ... args)
 {
 	hash_combine(seed, val);
 	hash_val(seed, args...);
 }
 
-template<typename... Types>
-inline std::size_t hash_val(const Types& ...args)
+template<typename... types>
+inline std::size_t hash_val(const types& ...args)
 {
 	std::size_t seed = 0;
 	hash_val(seed, args...);
@@ -49,6 +49,8 @@ public:
 	friend void operator<<(std::ostream &os,  Point &point);
 };
 
+typedef Point Vector;
+
 namespace std
 {
 	template<>
@@ -61,7 +63,7 @@ namespace std
 	}; // 间接调用原生Hash.
 }
 
-typedef Point Vector;
+
 
 class Line {
 	double a;

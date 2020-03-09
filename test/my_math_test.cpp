@@ -9,7 +9,7 @@ namespace mymathtest
 	TEST_CLASS(mymathtest)
 	{
 	public:
-		TEST_METHOD(TestMethod2)
+		TEST_METHOD(TestMethod2)	//	两线相交一点
 		{
 			Point p;
 			Point a1(5, 2);
@@ -24,44 +24,52 @@ namespace mymathtest
 			Point i(2.6153846153846, -0.3846153846154);
 			Assert::AreEqual(true, p == i);
 		}
-		TEST_METHOD(TestMethod3)
+		TEST_METHOD(TestMethod3)	//	两线相交一点
 		{
 			Point p;
-			Point a(1, 1);
-			Line l1(-1, 1, 0);
-			Line l2(-3, 1, 2);
-			p = l1.find_intersection(l2); 
-			Assert::AreEqual(true, p == a);
+			Point a1(2, 2);
+			Point b1(4, 4);
+			Point a2(4, 2);
+			Point b2(2, 6);
+
+			Line l1(a1, b1);
+			Line l2(a2, b2);
+			p = l1.find_intersection(l2);
+
+			Point i(3.3333333333333, 3.3333333333333);
+			Assert::AreEqual(true, p == i);
 		}
 
-		TEST_METHOD(TestMethod4)
+		TEST_METHOD(TestMethod4)	//	两线平行
 		{
 			Point p;
-			Point a(100, 100);
-			Line l1(0, 1, -100);
-			Line l2(-1, 1, 0);
+			Point a1(2, 2);
+			Point b1(4, 8);
+			Point a2(4, 2);
+			Point b2(6, 8);
+
+			Line l1(a1, b1);
+			Line l2(a2, b2);
 			p = l1.find_intersection(l2);
-			Assert::AreEqual(true, p == a);
+			Point i(INFINITY, INFINITY);
+
+			Assert::AreEqual(true, p == i);
 		}
-		TEST_METHOD(TestMethod5)
+		TEST_METHOD(TestMethod5)	//	两线平行
 		{
 			Point p;
-			Point a(4, 4);
-			Line l1(1, 0, -4);
-			Line l2(-1, 1, 0);
+			Point a1(-2, 0);
+			Point b1(2, 6);
+			Point a2(6, 2);
+			Point b2(10, 8);
+
+			Line l1(a1, b1);
+			Line l2(a2, b2);
 			p = l1.find_intersection(l2);
-			Assert::AreEqual(true, p == a);
+
+			Assert::AreEqual(true, p.get_x() == INFINITY && p.get_y() == INFINITY);
 		}
 
-		TEST_METHOD(TestMethod6)
-		{
-			Vector p;
-			Vector a(-1/sqrt(2), -1/sqrt(2));
-			Line l1(1, -1, 0);
-			
-			p = l1.get_directionVector();
-			Assert::AreEqual(true, p == a);
-		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////	圆线交点
 		TEST_METHOD(TestMethod7)
 		{
