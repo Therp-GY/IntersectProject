@@ -14,6 +14,8 @@ Point::Point()
 }
 bool Point::operator==(const Point& point) const 
 {
+	if (x_ == point.x_ && y_ == point.y_)
+		return true;
 	if (equal(x_, point.x_) && equal(y_, point.y_))
 	{
 		return true;
@@ -23,11 +25,15 @@ bool Point::operator==(const Point& point) const
 
 bool Point::operator<(const Point& point) const
 {
-	if (!equal(x_, point.x_))
-	{
+	if (equal(x_, point.x_) && equal(y_, point.y_)) {
+		return false;
+	}
+	if (!equal(x_, point.x_)) {
 		return x_ < point.x_;
 	}
-	return false;
+	else {
+		return y_ < point.y_;
+	}
 }
 
 Point Point::operator+(const Point& point) const

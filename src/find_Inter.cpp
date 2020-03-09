@@ -12,7 +12,7 @@ void find_intersection_c_l(Circle& c, vector<Line>& l_list, map<Point, int>& p_m
 void find_intersection_c_c(Circle& c, vector<Circle>& c_list, map<Point, int>& p_map);
 
 
-void main() {
+int main() {
 	map<Point, int>point_map;
 	map<Point, int>::iterator point_it;
 	vector<Line> line_list;
@@ -60,87 +60,67 @@ void main() {
 		}
 	}
 	cout << point_map.size() << endl;
-	for (point_it = point_map.begin(); point_it != point_map.end(); point_it++) {
-		cout << point_it ->first.get_x() << "," << point_it->first.get_y() << endl;
-	}
+	//for (point_it = point_map.begin(); point_it != point_map.end(); point_it++) {	
+	//	cout << point_it ->first.get_x() << "," << point_it->first.get_y() << endl;
+	//}
 
 }
 
 void find_intersection_l_l(Line &l,vector<Line> &l_list, map<Point, int>&p_map) {
-	for (int i = 0; i < l_list.size(); i++) {
+	for (unsigned int i = 0; i < l_list.size(); i++) {
 		Point p;
 		Point nopoint(INFINITY, INFINITY);
 		p = l_list[i].find_intersection(l);
 		if (p == nopoint)continue;
-		if (p_map.find(p) == p_map.end()) {
-			p_map.insert(pair<Point, int>(p, 1));
-		}
+		p_map.insert(pair<Point, int>(p, 1));
 	}
 }
 
 void find_intersection_l_c(Line &l, vector<Circle>& c_list, map<Point, int>& p_map) {
-	for (int i = 0; i < c_list.size(); i++) {
+	for (unsigned int i = 0; i < c_list.size(); i++) {
 		Point p[2];
 		int n;
 		n = c_list[i].find_intersection(l, p);
 		if (n == 0)continue;
 		else if (n == 1) {
-			if (p_map.find(p[0]) == p_map.end()) {
-				p_map.insert(pair<Point, int>(p[0], 1));
-			}
+			p_map.insert(pair<Point, int>(p[0], 1));
 		}
 		else {
-			if (p_map.find(p[0]) == p_map.end()) {
-				p_map.insert(pair<Point, int>(p[0], 1));
-			}
-			if (p_map.find(p[1]) == p_map.end()) {
-				p_map.insert(pair<Point, int>(p[1], 1));
-			}
+			p_map.insert(pair<Point, int>(p[0], 1));
+			p_map.insert(pair<Point, int>(p[1], 1));
 		}
 	}
 }
 
 void find_intersection_c_l(Circle &c, vector<Line>& l_list, map<Point, int>& p_map) {
-	for (int i = 0; i < l_list.size(); i++) {
+	for (unsigned int i = 0; i < l_list.size(); i++) {
 		Point p[2];
 		int n;
 		n = c.find_intersection(l_list[i], p);
 			if (n == 0)continue;
 		else if (n == 1) {
-			if (p_map.find(p[0]) == p_map.end()) {
-				p_map.insert(pair<Point, int>(p[0], 1));
-			}
+			p_map.insert(pair<Point, int>(p[0], 1));
 		}
 		else {
-			if (p_map.find(p[0]) == p_map.end()) {
-				p_map.insert(pair<Point, int>(p[0], 1));
-			}
-			if (p_map.find(p[1]) == p_map.end()) {
-				p_map.insert(pair<Point, int>(p[1], 1));
-			}
+			p_map.insert(pair<Point, int>(p[0], 1));
+			p_map.insert(pair<Point, int>(p[1], 1));	
 		}
 	}
 }
 
 
 void find_intersection_c_c(Circle &c, vector<Circle>& c_list, map<Point, int>& p_map) {
-	for (int i = 0; i < c_list.size(); i++) {
+	for (unsigned int i = 0; i < c_list.size(); i++) {
 		Point p[2];
 		int n;
 		n = c_list[i].find_intersection(c, p);
 		if (n == 0)continue;
 		else if (n == 1) {
-			if (p_map.find(p[0]) == p_map.end()) {
-				p_map.insert(pair<Point, int>(p[0], 1));
-			}
+			p_map.insert(pair<Point, int>(p[0], 1));	
 		}
 		else {
-			if (p_map.find(p[0]) == p_map.end()) {
-				p_map.insert(pair<Point, int>(p[0], 1));
-			}
-			if (p_map.find(p[1]) == p_map.end()) {
-				p_map.insert(pair<Point, int>(p[1], 1));
-			}
+			p_map.insert(pair<Point, int>(p[0], 1));
+			p_map.insert(pair<Point, int>(p[1], 1));
 		}
 	}
 }
