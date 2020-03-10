@@ -103,7 +103,7 @@ Point Line::find_intersection(const Line& line)
 {
 	if (*this == line) {
 		std::cout << "两条线重合， 无数个交点" << std::endl;
-		/*abort();*/
+		abort();
 	}
 	else {
 		if (b * line.a - a * line.b == 0) {
@@ -204,8 +204,7 @@ int Circle::find_intersection(const Circle& circle, Point* p)
 {
 	if (o == circle.o && (r - circle.r) < eps) {
 		std::cout << "两圆重合，无数个交点" << std::endl;
-		/*abort();*/
-		return 0;
+		abort();
 	}
 
 	//	交点个数
