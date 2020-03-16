@@ -4,32 +4,10 @@
 #include <iostream>
 #include <functional>	
 
-template<typename t>
-inline void hash_combine(std::size_t& seed, const t& val)
-{
-	seed ^= std::hash<t>()(val) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-}
-
-template<typename t>
-inline void hash_val(std::size_t& seed, const t& val)
-{
-	hash_combine(seed, val);
-}
-
-template<typename t, typename... types>
-inline void hash_val(std::size_t& seed, const t& val, const types& ... args)
-{
-	hash_combine(seed, val);
-	hash_val(seed, args...);
-}
-
-template<typename... types>
-inline std::size_t hash_val(const types& ...args)
-{
-	std::size_t seed = 0;
-	hash_val(seed, args...);
-	return seed;
-}
+class Point;
+class Line;
+class Circle;
+class Ray;
 
 class Point {
 	double x_;
@@ -51,21 +29,10 @@ public:
 
 typedef Point Vector;
 
-namespace std
-{
-	template<>
-	struct hash<Point>
-	{
-		size_t operator() (const Point& s) const noexcept
-		{
-			return hash_val(s.get_x(), s.get_y());
-		}
-	}; // 间接调用原生Hash.
-}
-
 
 
 class Line {
+protected:
 	double a;
 	double b;
 	double c;
@@ -74,12 +41,13 @@ public:
 	Line(const Point& p1, const  Point& p2);
 	Line(const double& a_, const double& b_, const double& c_);
 	Line(const double& a_, const double& b_, const Point &point);
-	Point find_intersection(const Line &line);	
+	virtual int find_intersection(const Line &line, Point *p) const; 	
+	virtual int find_intersection(const Circle& circle, Point* p) const;
 	double get_a()const;
 	double get_b()const;
 	double get_c()const;
 	Vector get_directionVector()const;
-	bool operator==(const Line& line);
+	bool operator==(const Line& line)const;
 	friend void operator<<(std::ostream& os, Line& line);
 };
 
@@ -89,13 +57,22 @@ class Circle {
 public:
 	Circle(const Point& point, const double r_);
 	Circle();
-	int find_intersection(const Line& line , Point *p);
-	int find_intersection(const Circle& circle, Point* p);
+	int find_intersection(const Line& line , Point *p)const;
+	int find_intersection(const Circle& circle, Point* p)const;
 	double get_r()const;
 	Point get_o()const;
 
 };
 
+
+class Ray:public Line {
+private:
+	Point start_point;
+	int x_change;
+	int y_change;
+public:
+
+};
 bool equal(const double& a, const double& b);
 
 

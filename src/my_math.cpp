@@ -99,15 +99,16 @@ Line::Line(const double& a_, const double& b_, const Point& point)
 	c = -a * point.get_x() - b * point.get_y();
 }
 
-Point Line::find_intersection(const Line& line)
+int Line::find_intersection(const Line& line, Point* p)const
 {
 	if (*this == line) {
 		std::cout << "两条线重合， 无数个交点" << std::endl;
-		abort();
+		/*abort();*/
+		return 0;
 	}
 	else {
 		if (b * line.a - a * line.b == 0) {
-			return Point();
+			return 0;
 		}
 		else {
 			double x;
@@ -119,13 +120,21 @@ Point Line::find_intersection(const Line& line)
 			else {
 				x = (-line.c - line.b * y) / line.a;
 			}
-			return Point(x, y);
+			p[0] = Point(x,y);
+			return 1;
 		}
 	}
 	
 }
 
-bool Line::operator==(const Line& line)
+int Line::find_intersection(const Circle& circle, Point* p)const
+{
+	int n;
+	n = circle.find_intersection(*this, p);
+	return n;
+}
+
+bool Line::operator==(const Line& line)const
 {
 	if (equal(a, line.a) && equal(b, line.b) && equal(c, line.c)) {
 		return true;
@@ -179,12 +188,13 @@ Circle::Circle()
 	r = 0;
 }
 
-int Circle::find_intersection(const Line& line, Point* p)
+int Circle::find_intersection(const Line& line, Point* p)const
 {
 	int n;	//	交点个数
+	Point i1;
 	Vector line_vector = line.get_directionVector();	//	line 的单位向量
 	Line line_h(-line.get_b(), line.get_a(), o); // 和 line 垂直且过圆心的垂线 line_h
-	Point i1 = line_h.find_intersection(line);	// l_h 和 line 的交点 i1
+	line_h.find_intersection(line, &i1);	// l_h 和 line 的交点 i1
 	double d = i1.distance(o);	//	i1 到 圆心 o 的 距离
 	double l = sqrt(pow(r, 2) - pow(d, 2));	//  sqrt(r^2 - d^2)
 	Vector v = line_vector* l;
@@ -200,11 +210,12 @@ int Circle::find_intersection(const Line& line, Point* p)
 	return n;
 }
 
-int Circle::find_intersection(const Circle& circle, Point* p)
+int Circle::find_intersection(const Circle& circle, Point* p)const
 {
 	if (o == circle.o && (r - circle.r) < eps) {
 		std::cout << "两圆重合，无数个交点" << std::endl;
-		abort();
+		/*abort();*/
+		return 0;
 	}
 
 	//	交点个数
